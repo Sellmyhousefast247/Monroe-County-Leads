@@ -1,9 +1,11 @@
 {
-  "fetched_at": null,
-  "source": "Monroe County, NY – Public Records",
-  "date_range": {"from": null, "to": null},
+  "fetched_at": "2026-04-19T23:05:45.286300Z",
+  "source": "Monroe County, NY \u2013 Public Records",
+  "date_range": {
+    "from": "2026-04-12",
+    "to": "2026-04-19"
+  },
   "total": 0,
   "with_address": 0,
   "records": []
 }
-
