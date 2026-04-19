@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Monroe County NY — Motivated Seller Leads</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --border: #2e3350;
+    --accent: #4f8ef7;
+    --accent2: #e05c5c;
+    --green: #3ecf8e;
+    --yellow: #f4c94b;
+    --text: #e8eaf0;
+    --muted: #7b82a0;
+    --radius: 10px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; font-size: 14px; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── Header ── */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 24px;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  }
+  header h1 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
+  header h1 span { color: var(--accent); }
+  .meta { color: var(--muted); font-size: 12px; }
+
+  /* ── Stats row ── */
+  .stats {
+    display: flex; flex-wrap: wrap; gap: 12px;
+    padding: 20px 24px;
+  }
+  .stat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 20px;
+    min-width: 140px; flex: 1;
+  }
+  .stat-value { font-size: 28px; font-weight: 700; color: var(--accent); }
+  .stat-label { font-size: 11px; color: var(--muted); margin-top: 2px; text-transform: uppercase; letter-spacing: .5px; }
+
+  /* ── Controls ── */
+  .controls {
+    padding: 0 24px 16px;
+    display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+  }
+  input[type=text], select {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    padding: 8px 12px;
+    font-size: 13px;
+    outline: none;
+  }
+  input[type=text]:focus, select:focus { border-color: var(--accent); }
+  input[type=text] { width: 260px; }
+  .btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 13px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .btn:hover { opacity: .85; }
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── Table ── */
+  .table-wrap { padding: 0 24px 40px; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; min-width: 900px; }
+  thead th {
+    background: var(--surface2);
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+  }
+  thead th:hover { color: var(--text); }
+  thead th .sort-arrow { opacity: .4; }
+  thead th.active .sort-arrow { opacity: 1; color: var(--accent); }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background .15s; }
+  tbody tr:hover { background: var(--surface); }
+  tbody td { padding: 10px 12px; vertical-align: top; }
+
+  /* Score pill */
+  .score {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 42px; height: 24px;
+    border-radius: 12px;
+    font-weight: 700; font-size: 12px;
+  }
+  .score-high { background: #1e3d24; color: var(--green); }
+  .score-mid  { background: #3a2e10; color: var(--yellow); }
+  .score-low  { background: #2a1a1a; color: var(--accent2); }
+
+  /* Cat badge */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .badge-LP     { background: #1a2a4a; color: #6baeff; }
+  .badge-NOFC   { background: #3a1a1a; color: #f07070; }
+  .badge-TAXDEED{ background: #2a1a00; color: #f4a733; }
+  .badge-JUD    { background: #2a1f3a; color: #b48cf7; }
+  .badge-CCJ    { background: #2a1f3a; color: #b48cf7; }
+  .badge-DRJUD  { background: #2a1f3a; color: #b48cf7; }
+  .badge-LN     { background: #1a2a2a; color: #5fd4c8; }
+  .badge-LNMECH { background: #1a2a2a; color: #5fd4c8; }
+  .badge-LNHOA  { background: #1a2a2a; color: #5fd4c8; }
+  .badge-LNIRS  { background: #2a1a00; color: #f4a733; }
+  .badge-LNCORPTX { background: #2a1a00; color: #f4a733; }
+  .badge-LNFED  { background: #2a1a00; color: #f4a733; }
+  .badge-MEDLN  { background: #1a2a2a; color: #5fd4c8; }
+  .badge-PRO    { background: #1a2a1a; color: #5fe88c; }
+  .badge-NOC    { background: #1a1a2a; color: #a0aaff; }
+  .badge-RELLP  { background: #222; color: #888; }
+
+  /* Flags */
+  .flags { display: flex; flex-wrap: wrap; gap: 4px; }
+  .flag {
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: var(--surface2);
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .flag-hot { background: #3a1010; color: #e07070; }
+
+  .owner-cell { max-width: 180px; }
+  .addr-cell  { max-width: 200px; font-size: 12px; color: var(--muted); }
+  .trunc { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  .amount { font-variant-numeric: tabular-nums; }
+
+  .no-data {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+    font-size: 15px;
+  }
+
+  /* Export row */
+  .export-row {
+    padding: 0 24px 12px;
+    display: flex; gap: 10px; align-items: center;
+  }
+  .count-label { color: var(--muted); font-size: 13px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Monroe County <span>NY</span> — Motivated Seller Leads</h1>
+    <div class="meta" id="meta-line">Loading…</div>
+  </div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <button class="btn-outline" onclick="exportCSV()">⬇ Export GHL CSV</button>
+    <button class="btn" onclick="location.reload()">↻ Refresh</button>
+  </div>
+</header>
+
+<!-- Stats -->
+<div class="stats" id="stats-row"></div>
+
+<!-- Controls -->
+<div class="controls">
+  <input type="text" id="search" placeholder="Search owner, address, doc #…" oninput="applyFilters()" />
+  <select id="filter-cat" onchange="applyFilters()">
+    <option value="">All Lead Types</option>
+    <option value="LP">Lis Pendens</option>
+    <option value="NOFC">Foreclosure</option>
+    <option value="TAXDEED">Tax Deed</option>
+    <option value="JUD">Judgment</option>
+    <option value="CCJ">Cert. Judgment</option>
+    <option value="LNIRS">IRS Lien</option>
+    <option value="LNCORPTX">Corp Tax Lien</option>
+    <option value="LNFED">Federal Lien</option>
+    <option value="LN">Lien</option>
+    <option value="LNMECH">Mechanic Lien</option>
+    <option value="LNHOA">HOA Lien</option>
+    <option value="MEDLN">Medicaid Lien</option>
+    <option value="PRO">Probate</option>
+    <option value="NOC">Notice of Commencement</option>
+    <option value="RELLP">Release LP</option>
+  </select>
+  <select id="filter-score" onchange="applyFilters()">
+    <option value="">All Scores</option>
+    <option value="70">Score ≥ 70</option>
+    <option value="50">Score ≥ 50</option>
+    <option value="30">Score ≥ 30</option>
+  </select>
+  <select id="filter-addr" onchange="applyFilters()">
+    <option value="">All Records</option>
+    <option value="1">With Address Only</option>
+  </select>
+  <button class="btn-outline" onclick="clearFilters()">Clear</button>
+</div>
+
+<!-- Export count -->
+<div class="export-row">
+  <span class="count-label" id="count-label">0 records shown</span>
+</div>
+
+<!-- Table -->
+<div class="table-wrap">
+  <table id="leads-table">
+    <thead>
+      <tr>
+        <th onclick="sortBy('score')" class="active">Score <span class="sort-arrow">▼</span></th>
+        <th onclick="sortBy('cat')">Type <span class="sort-arrow">↕</span></th>
+        <th onclick="sortBy('owner')">Owner / Grantor <span class="sort-arrow">↕</span></th>
+        <th onclick="sortBy('filed')">Filed <span class="sort-arrow">↕</span></th>
+        <th onclick="sortBy('amount')">Amount <span class="sort-arrow">↕</span></th>
+        <th>Property Address</th>
+        <th>Mailing Address</th>
+        <th>Flags</th>
+        <th>Doc #</th>
+        <th>Link</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+  <div class="no-data" id="no-data" style="display:none">No records match your filters.</div>
+</div>
+
+<script>
+let ALL_RECORDS = [];
+let sortField = 'score';
+let sortAsc = false;
+
+async function loadData() {
+  try {
+    const r = await fetch('records.json?t=' + Date.now());
+    const data = await r.json();
+    ALL_RECORDS = data.records || [];
+
+    // Meta line
+    const fd = data.fetched_at ? new Date(data.fetched_at).toLocaleString() : 'N/A';
+    document.getElementById('meta-line').textContent =
+      `Last updated: ${fd} | Range: ${data.date_range?.from || '?'} → ${data.date_range?.to || '?'}`;
+
+    // Stats
+    renderStats(data);
+    applyFilters();
+  } catch(e) {
+    document.getElementById('meta-line').textContent = 'Failed to load records.json';
+    console.error(e);
+  }
+}
+
+function renderStats(data) {
+  const records = data.records || [];
+  const byType = {};
+  let highScore = 0;
+  records.forEach(r => {
+    byType[r.cat] = (byType[r.cat] || 0) + 1;
+    if (r.score > highScore) highScore = r.score;
+  });
+
+  const stats = [
+    { value: data.total || 0,         label: 'Total Leads' },
+    { value: data.with_address || 0,  label: 'With Address' },
+    { value: records.filter(r => r.score >= 70).length, label: 'High Score (≥70)' },
+    { value: byType['LP'] || 0,       label: 'Lis Pendens' },
+    { value: byType['NOFC'] || 0,     label: 'Foreclosures' },
+    { value: (byType['JUD']||0) + (byType['CCJ']||0) + (byType['DRJUD']||0), label: 'Judgments' },
+    { value: Object.values(byType).filter((v,i) => Object.keys(byType)[i].startsWith('LN')).reduce((a,b)=>a+b,0), label: 'Liens' },
+    { value: byType['PRO'] || 0,      label: 'Probate' },
+  ];
+
+  document.getElementById('stats-row').innerHTML = stats.map(s =>
+    `<div class="stat"><div class="stat-value">${s.value}</div><div class="stat-label">${s.label}</div></div>`
+  ).join('');
+}
+
+function applyFilters() {
+  const q    = document.getElementById('search').value.toLowerCase();
+  const cat  = document.getElementById('filter-cat').value;
+  const minS = parseInt(document.getElementById('filter-score').value) || 0;
+  const addrOnly = document.getElementById('filter-addr').value === '1';
+
+  let filtered = ALL_RECORDS.filter(r => {
+    if (cat && r.cat !== cat) return false;
+    if (r.score < minS) return false;
+    if (addrOnly && !r.prop_address) return false;
+    if (q && !JSON.stringify(r).toLowerCase().includes(q)) return false;
+    return true;
+  });
+
+  // Sort
+  filtered.sort((a, b) => {
+    let av = a[sortField] ?? '', bv = b[sortField] ?? '';
+    if (typeof av === 'string') av = av.toLowerCase();
+    if (typeof bv === 'string') bv = bv.toLowerCase();
+    if (av < bv) return sortAsc ? -1 : 1;
+    if (av > bv) return sortAsc ? 1 : -1;
+    return 0;
+  });
+
+  document.getElementById('count-label').textContent = `${filtered.length} record${filtered.length !== 1 ? 's' : ''} shown`;
+  renderTable(filtered);
+}
+
+function renderTable(records) {
+  const tbody = document.getElementById('tbody');
+  const noData = document.getElementById('no-data');
+
+  if (!records.length) {
+    tbody.innerHTML = '';
+    noData.style.display = 'block';
+    return;
+  }
+  noData.style.display = 'none';
+
+  tbody.innerHTML = records.map(r => {
+    const scoreClass = r.score >= 70 ? 'score-high' : r.score >= 50 ? 'score-mid' : 'score-low';
+    const badgeClass = 'badge badge-' + (r.cat || 'LN');
+    const flags = Array.isArray(r.flags) ? r.flags : [];
+    const hotFlags = ['Lis pendens','Pre-foreclosure','Tax lien'];
+    const flagHtml = flags.map(f =>
+      `<span class="flag ${hotFlags.includes(f) ? 'flag-hot' : ''}">${f}</span>`
+    ).join('');
+    const amt = r.amount ? '$' + Number(r.amount).toLocaleString() : '—';
+    const propAddr = [r.prop_address, r.prop_city, r.prop_state, r.prop_zip].filter(Boolean).join(', ');
+    const mailAddr = [r.mail_address, r.mail_city, r.mail_state, r.mail_zip].filter(Boolean).join(', ');
+    const link = r.clerk_url ? `<a href="${escHtml(r.clerk_url)}" target="_blank" rel="noopener">View ↗</a>` : '—';
+
+    return `<tr>
+      <td><span class="score ${scoreClass}">${r.score}</span></td>
+      <td><span class="${badgeClass}">${escHtml(r.cat_label || r.cat)}</span></td>
+      <td class="owner-cell"><div class="trunc" title="${escHtml(r.owner)}">${escHtml(r.owner || '—')}</div>
+          ${r.grantee ? `<div style="font-size:11px;color:var(--muted)" class="trunc">${escHtml(r.grantee)}</div>` : ''}
+      </td>
+      <td style="white-space:nowrap">${r.filed || '—'}</td>
+      <td class="amount">${amt}</td>
+      <td class="addr-cell"><div class="trunc" title="${escHtml(propAddr)}">${escHtml(propAddr) || '—'}</div></td>
+      <td class="addr-cell"><div class="trunc" title="${escHtml(mailAddr)}">${escHtml(mailAddr) || '—'}</div></td>
+      <td><div class="flags">${flagHtml}</div></td>
+      <td style="white-space:nowrap;font-size:12px;color:var(--muted)">${escHtml(r.doc_num || '—')}</td>
+      <td>${link}</td>
+    </tr>`;
+  }).join('');
+}
+
+function sortBy(field) {
+  if (sortField === field) sortAsc = !sortAsc;
+  else { sortField = field; sortAsc = field !== 'score'; }
+
+  document.querySelectorAll('thead th').forEach(th => {
+    th.classList.remove('active');
+    th.querySelector('.sort-arrow').textContent = '↕';
+  });
+  const ths = document.querySelectorAll('thead th');
+  const fields = ['score','cat','owner','filed','amount','prop_address','mail_address','flags','doc_num','clerk_url'];
+  const idx = fields.indexOf(field);
+  if (idx >= 0 && ths[idx]) {
+    ths[idx].classList.add('active');
+    ths[idx].querySelector('.sort-arrow').textContent = sortAsc ? '▲' : '▼';
+  }
+  applyFilters();
+}
+
+function clearFilters() {
+  document.getElementById('search').value = '';
+  document.getElementById('filter-cat').value = '';
+  document.getElementById('filter-score').value = '';
+  document.getElementById('filter-addr').value = '';
+  applyFilters();
+}
+
+function exportCSV() {
+  const q    = document.getElementById('search').value.toLowerCase();
+  const cat  = document.getElementById('filter-cat').value;
+  const minS = parseInt(document.getElementById('filter-score').value) || 0;
+  const addrOnly = document.getElementById('filter-addr').value === '1';
+
+  let records = ALL_RECORDS.filter(r => {
+    if (cat && r.cat !== cat) return false;
+    if (r.score < minS) return false;
+    if (addrOnly && !r.prop_address) return false;
+    if (q && !JSON.stringify(r).toLowerCase().includes(q)) return false;
+    return true;
+  });
+
+  const cols = [
+    'First Name','Last Name',
+    'Mailing Address','Mailing City','Mailing State','Mailing Zip',
+    'Property Address','Property City','Property State','Property Zip',
+    'Lead Type','Document Type','Date Filed','Document Number',
+    'Amount/Debt Owed','Seller Score','Motivated Seller Flags','Source','Public Records URL'
+  ];
+
+  const rows = [cols];
+  records.forEach(r => {
+    const nameParts = (r.owner || '').trim().split(/\s+/);
+    const first = nameParts.length > 1 ? nameParts[0] : '';
+    const last  = nameParts.length > 1 ? nameParts.slice(1).join(' ') : nameParts[0] || '';
+    const flags = Array.isArray(r.flags) ? r.flags.join('; ') : (r.flags || '');
+    rows.push([
+      first, last,
+      r.mail_address||'', r.mail_city||'', r.mail_state||'NY', r.mail_zip||'',
+      r.prop_address||'', r.prop_city||'', r.prop_state||'NY', r.prop_zip||'',
+      r.cat_label||r.cat||'', r.doc_type||'', r.filed||'', r.doc_num||'',
+      r.amount||'', r.score||'', flags, r.source||'', r.clerk_url||''
+    ]);
+  });
+
+  const csv = rows.map(row => row.map(cell => '"' + String(cell).replace(/"/g,'""') + '"').join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `monroe_leads_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+}
+
+function escHtml(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+loadData();
+</script>
+</body>
+</html>
