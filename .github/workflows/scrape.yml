@@ -3,7 +3,7 @@ name: Monroe County Lead Scraper
 on:
   schedule:
     - cron: "0 12 * * *"   # 7 AM CST (UTC-5) = 12:00 UTC
-  workflow_dispatch:         # manual trigger
+  workflow_dispatch:         # manual trigger from Actions tab
 
 permissions:
   contents: write
@@ -17,7 +17,7 @@ concurrency:
 jobs:
   scrape:
     runs-on: ubuntu-22.04
-    timeout-minutes: 30
+    timeout-minutes: 20
 
     steps:
       - name: Checkout repository
@@ -32,13 +32,10 @@ jobs:
           cache: "pip"
           cache-dependency-path: scraper/requirements.txt
 
-      - name: Install Python dependencies
+      - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install requests beautifulsoup4 lxml dbfread playwright
-
-      - name: Install Playwright Chromium
-        run: python -m playwright install --with-deps chromium
+          pip install requests beautifulsoup4 lxml dbfread
 
       - name: Run scraper
         env:
@@ -48,8 +45,8 @@ jobs:
       - name: Commit updated records
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add dashboard/records.json data/records.json data/ghl_export.csv || true
+          git config --local user.name  "github-actions[bot]"
+          git add dashboard/records.json data/records.json data/ghl_export.csv 2>/dev/null || true
           git diff --staged --quiet || git commit -m "chore: update leads $(date -u +%Y-%m-%dT%H:%M:%SZ)"
           git push
 
@@ -64,7 +61,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: main   # pull latest after commit above
+          ref: main
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v4
@@ -77,4 +74,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
